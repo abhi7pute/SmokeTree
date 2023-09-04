@@ -1,21 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
     <style>
-        /* Reset some default styles */
+        /* Reset default styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* Body background color and font */
+        /* Body styling */
         body {
             background-color: #f4f4f4;
             font-family: Arial, sans-serif;
         }
 
-        /* Container for the form */
+        /* Form container */
         .container {
             max-width: 400px;
             margin: 0 auto;
@@ -25,18 +28,18 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
 
-        /* Form title style */
+        /* Form title */
         h2 {
             text-align: center;
             margin-bottom: 20px;
         }
 
-        /* Input field labels */
+        /* Label styling */
         label {
             font-weight: bold;
         }
 
-        /* Input fields style */
+        /* Input field styling */
         input[type="text"],
         input[type="number"] {
             width: 100%;
@@ -46,7 +49,7 @@
             border-radius: 3px;
         }
 
-        /* Submit button style */
+        /* Submit button styling */
         button[type="submit"] {
             background-color: #007bff;
             color: #fff;
@@ -61,17 +64,28 @@
         button[type="submit"]:hover {
             background-color: #0056b3;
         }
+
+        /* Link styling */
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007bff;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>User Registration Form</h2>
         <form action="/" method="post">
-            <h2>User</h2>
+            <!-- User Section -->
+            <h3>User Information</h3>
             <label for="user">User:</label>
-            <input type="text" id="firstName" name="user" required>
-            
-            <h2>Address</h2>
+            <input type="text" id="user" name="user" required>
+
+            <!-- Address Section -->
+            <h3>Address Information</h3>
             <label for="city">City:</label>
             <input type="text" id="city" name="city" required>
 
@@ -81,8 +95,12 @@
             <label for="zip">Zip Code:</label>
             <input type="number" id="zip" name="zip" required>
 
+            <!-- Submit Button -->
             <button type="submit">Submit</button>
         </form>
+
+        <!-- View Users Link -->
+        <a href="/view_users">View Users</a>
     </div>
 </body>
 </html>

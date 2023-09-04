@@ -1,69 +1,63 @@
 const express = require("express");
-const ejs = require("ejs");
-const bodyParser = require("body-parser"); // Corrected the spelling of bodyParser
 const mongoose = require("mongoose");
 const app = express();
+const PORT = 3000;
 
+// Set up Express
 app.set("view engine", "ejs");
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
+// Connect to MongoDB
 mongoose.connect("mongodb://127.0.0.1:27017/test", {
   useNewUrlParser: true,
   useUnifiedTopology: true
-}).then(() => {
-  console.log("DB connected!");
-}).catch((err) => {
-  console.error(err); // Use console.error for error messages
-});
+})
+.then(() => console.log("Connected to the database"))
+.catch(err => console.error("Database connection error:", err));
 
-const SmokeSchema = new mongoose.Schema({
+// Define the Mongoose schema
+const smokeSchema = new mongoose.Schema({
   user: String,
   city: String,
   state: String,
   zip: Number
 });
 
-const Smoke = mongoose.model("Smoke", SmokeSchema); // Corrected the model creation
+const Smoke = mongoose.model("Smoke", smokeSchema);
 
+// POST route for adding data
 app.post("/", async (req, res) => {
-    const User = req.body.user;
-    const City = req.body.city;
-    const State = req.body.state;
-    const Zip = req.body.zip;
-  
-    try {
-      const smokeAdd = new Smoke({
-        user: User,
-        city: City,
-        state: State,
-        zip: Zip
-      });
-  
-      await smokeAdd.save();
-      console.log("Data saved successfully!");
-      res.redirect("/"); // Redirect to the main page after saving
-    } catch (err) {
-      console.error(err);
-      res.status(500).send("An error occurred while saving data.");
-    }
-  });
+  const { user, city, state, zip } = req.body;
 
-  app.get("/view_users", async (req, res) => {
-    try {
-      const foundUsers = await Smoke.find({});
-      res.json(foundUsers);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send("An error occurred while fetching data.");
-    }
-  });
-  
+  try {
+    const newSmoke = new Smoke({ user, city, state, zip });
+    await newSmoke.save();
+    console.log("Data saved successfully!");
+    res.redirect("/");
+  } catch (err) {
+    console.error("Error saving data:", err);
+    res.status(500).send("An error occurred while saving data.");
+  }
+});
 
+// GET route for viewing users
+app.get("/view_users", async (req, res) => {
+  try {
+    const foundUsers = await Smoke.find({});
+    res.json(foundUsers);
+  } catch (err) {
+    console.error("Error fetching data:", err);
+    res.status(500).send("An error occurred while fetching data.");
+  }
+});
+
+// GET route for the main page
 app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on Port 3000");
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on Port ${PORT}`);
 });
